@@ -1,6 +1,7 @@
-package ro.msg.learning.shop.contoler;
+package ro.msg.learning.shop.contoller;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,22 +13,18 @@ import ro.msg.learning.shop.service.ProductCategoryService;
 import java.util.List;
 
 @RestController
-public class ProductCategoryControler {
-    private final ProductCategoryService productService;
+@RequiredArgsConstructor
+public class ProductCategoryController {
+    private final ProductCategoryService productCategoryService;
     private final ProductCategoryMapper productCategoryMapper;
 
-    public ProductCategoryControler(ProductCategoryService productService, ProductCategoryMapper productCategoryMapper) {
-        this.productService = productService;
-        this.productCategoryMapper = productCategoryMapper;
-    }
-
-    @PostMapping("/products/categories")
+    @PostMapping("/categories")
     public void saveProductCategory(@RequestBody ProductCategoryDto productCategory) {
-        this.productService.saveProductCategory(productCategoryMapper.toProductCategory(productCategory));
+        this.productCategoryService.saveProductCategory(productCategory);
     }
 
-    @GetMapping("/products/categories")
+    @GetMapping("/categories")
     public List<ProductCategoryDto> findAllProductCategories() {
-        return this.productService.findAllProductCategories().stream().map(productCategoryMapper::toDto).toList();
+        return this.productCategoryService.findAllProductCategories().stream().map(productCategoryMapper::toDto).toList();
     }
 }

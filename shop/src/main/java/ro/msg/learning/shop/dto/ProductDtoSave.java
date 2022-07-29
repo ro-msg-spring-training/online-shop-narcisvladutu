@@ -9,12 +9,12 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
-    private Integer id;
+public class ProductDtoSave {
     private String name;
     private String description;
     private BigDecimal price;
     private Double weight;
-    private String productCategoryName;
-    private String supplierName;
+    private Integer productCategoryId;
+    private Integer supplierId;
+    private String imageUrl;
 }
