@@ -7,17 +7,12 @@ import ro.msg.learning.shop.dto.ProductDtoSave;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.model.ProductCategory;
 import ro.msg.learning.shop.model.Supplier;
-import ro.msg.learning.shop.repository.ProductCategoryRepository;
-import ro.msg.learning.shop.repository.SupplierRepository;
 
 import java.math.BigDecimal;
 
 @Component
 @RequiredArgsConstructor
 public class ProductMapper {
-    private final ProductCategoryRepository productCategoryRepository;
-    private final SupplierRepository supplierRepository;
-
     public ProductDto toDto(Product product) {
         Integer id = product.getId();
         String name = product.getName();
@@ -29,10 +24,7 @@ public class ProductMapper {
         return new ProductDto(id, name, description, price, weight, category.getName(), supplier.getName());
     }
 
-    public Product toProduct(ProductDtoSave productDtoSave) {
-        ProductCategory productCategory = productCategoryRepository.getReferenceById(productDtoSave.getProductCategoryId());
-        Supplier supplier = supplierRepository.getReferenceById(productDtoSave.getSupplierId());
-
+    public Product toProduct(ProductDtoSave productDtoSave, ProductCategory productCategory, Supplier supplier) {
         return new Product(
                 productDtoSave.getName(),
                 productDtoSave.getDescription(),

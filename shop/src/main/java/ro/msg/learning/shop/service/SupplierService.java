@@ -2,7 +2,8 @@ package ro.msg.learning.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.dto.SupplierDto;
+import ro.msg.learning.shop.exception.ProductCategoryException;
+import ro.msg.learning.shop.exception.SupplierException;
 import ro.msg.learning.shop.model.Supplier;
 import ro.msg.learning.shop.repository.SupplierRepository;
 
@@ -24,12 +25,15 @@ public class SupplierService {
     }
 
     public Optional<Supplier> getSupplierById(final Integer id) {
-        return supplierRepository.findById(id);
+        return Optional.ofNullable(supplierRepository.findById(id).orElseThrow(
+                () -> new SupplierException("supplier not found for the id " + id)));
     }
 
-    public void deleteSupplier(Integer categoryId) {
-        if (supplierRepository.existsById(categoryId)) {
-            supplierRepository.deleteById(categoryId);
+    public void deleteSupplier(Integer supplierID) {
+        if (supplierRepository.existsById(supplierID)) {
+            supplierRepository.deleteById(supplierID);
+        } else {
+            throw (new ProductCategoryException("supplier not found for the id " + supplierID));
         }
     }
 }

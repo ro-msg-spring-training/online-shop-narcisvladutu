@@ -5,11 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import java.util.Set;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "PRODUCT_CATEGORY")
@@ -24,6 +21,6 @@ public class ProductCategory extends BaseEntity<Integer> {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "category")
-    private Set<Product> products;
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    private List<Product> products;
 }

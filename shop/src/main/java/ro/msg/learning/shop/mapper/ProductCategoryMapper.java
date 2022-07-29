@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import ro.msg.learning.shop.dto.ProductCategoryDto;
 import ro.msg.learning.shop.model.ProductCategory;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 @Component
 @RequiredArgsConstructor
@@ -17,7 +17,7 @@ public class ProductCategoryMapper {
         return new ProductCategoryDto(id, name, description);
     }
 
-    public ProductCategory toProductCategory(ProductCategoryDto productCategoryDto){
-        return new ProductCategory(productCategoryDto.getName(), productCategoryDto.getDescription(), new HashSet<>());
+    public ProductCategory toProductCategory(ProductCategoryDto productCategoryDto) {
+        return new ProductCategory(productCategoryDto.getName(), productCategoryDto.getDescription(), new ArrayList<>());
     }
 }

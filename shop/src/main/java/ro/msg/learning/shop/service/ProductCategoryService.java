@@ -2,6 +2,7 @@ package ro.msg.learning.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ro.msg.learning.shop.exception.ProductCategoryException;
 import ro.msg.learning.shop.model.ProductCategory;
 import ro.msg.learning.shop.repository.ProductCategoryRepository;
 
@@ -22,12 +23,15 @@ public class ProductCategoryService {
     }
 
     public Optional<ProductCategory> getProductCategoryById(final Integer id) {
-        return productCategoryRepository.findById(id);
+        return Optional.ofNullable(productCategoryRepository.findById(id).orElseThrow(
+                () -> new ProductCategoryException("category not found for the id " + id)));
     }
 
     public void deleteProductCategory(Integer categoryId) {
         if (productCategoryRepository.existsById(categoryId)) {
             productCategoryRepository.deleteById(categoryId);
+        } else {
+            throw (new ProductCategoryException("category not found for the id " + categoryId));
         }
     }
 }

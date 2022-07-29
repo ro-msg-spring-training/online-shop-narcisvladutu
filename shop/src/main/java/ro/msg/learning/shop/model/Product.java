@@ -26,7 +26,7 @@ public class Product extends BaseEntity<Integer> {
     @Column(name = "weight")
     private Double weight;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonUnwrapped
     @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory category;
