@@ -15,8 +15,8 @@ public class SupplierService {
 
     private final SupplierRepository supplierRepository;
 
-    public void saveSupplier(SupplierDto supplierDto) {
-        supplierRepository.save(new Supplier(supplierDto.getName()));
+    public void saveSupplier(Supplier supplier) {
+        supplierRepository.save(supplier);
     }
 
     public List<Supplier> findAllSuppliers() {

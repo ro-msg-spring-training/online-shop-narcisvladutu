@@ -19,7 +19,7 @@ public class SupplierController {
 
     @PostMapping("/suppliers")
     public void saveProductCategory(@RequestBody SupplierDto supplierDto) {
-        this.supplierService.saveSupplier(supplierDto);
+        this.supplierService.saveSupplier(supplierMapper.toSupplier(supplierDto));
     }
 
     @GetMapping("/suppliers")

@@ -26,6 +26,6 @@ public class ProductController {
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveProduct(@RequestBody ProductDtoSave productDtoSave) {
-        productService.saveProduct(productDtoSave);
+        productService.saveProduct(productMapper.toProduct(productDtoSave));
     }
 }

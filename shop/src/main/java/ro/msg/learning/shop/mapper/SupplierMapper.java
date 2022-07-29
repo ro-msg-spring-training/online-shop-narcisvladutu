@@ -13,4 +13,8 @@ public class SupplierMapper {
         String name = supplier.getName();
         return new SupplierDto(id, name);
     }
+
+    public Supplier toSupplier(SupplierDto supplierDto) {
+        return new Supplier(supplierDto.getName());
+    }
 }

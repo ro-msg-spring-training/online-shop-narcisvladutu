@@ -20,7 +20,7 @@ public class ProductCategoryController {
 
     @PostMapping("/categories")
     public void saveProductCategory(@RequestBody ProductCategoryDto productCategory) {
-        this.productCategoryService.saveProductCategory(productCategory);
+        this.productCategoryService.saveProductCategory(productCategoryMapper.toProductCategory(productCategory));
     }
 
     @GetMapping("/categories")
