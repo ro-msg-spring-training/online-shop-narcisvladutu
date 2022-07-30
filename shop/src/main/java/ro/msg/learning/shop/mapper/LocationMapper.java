@@ -1,9 +1,13 @@
 package ro.msg.learning.shop.mapper;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ro.msg.learning.shop.dto.LocationDto;
 import ro.msg.learning.shop.model.Address;
 import ro.msg.learning.shop.model.Location;
 
+@Component
+@RequiredArgsConstructor
 public class LocationMapper {
     public LocationDto toDto(Location location) {
         Integer id = location.getId();

@@ -15,7 +15,7 @@ public class LocationController {
     private final LocationMapper locationMapper;
 
     @PostMapping("/locations")
-    public void saveSLocation(@RequestBody LocationDto locationDto) {
+    public void saveLocation(@RequestBody LocationDto locationDto) {
         this.locationService.saveLocation(locationMapper.toLocation(locationDto));
     }
 
