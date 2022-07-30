@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProductCategoryService {
+    private static final String ERROR_MESSAGE = "category not found for the id ";
     private final ProductCategoryRepository productCategoryRepository;
 
     public void saveProductCategory(ProductCategory productCategory) {
@@ -24,14 +25,14 @@ public class ProductCategoryService {
 
     public Optional<ProductCategory> findProductCategoryById(final Integer id) {
         return Optional.ofNullable(productCategoryRepository.findById(id).orElseThrow(
-                () -> new ProductCategoryException("category not found for the id " + id)));
+                () -> new ProductCategoryException(ERROR_MESSAGE + id)));
     }
 
     public void deleteProductCategory(Integer categoryId) {
         if (productCategoryRepository.existsById(categoryId)) {
             productCategoryRepository.deleteById(categoryId);
         } else {
-            throw (new ProductCategoryException("category not found for the id " + categoryId));
+            throw (new ProductCategoryException(ERROR_MESSAGE + categoryId));
         }
     }
 }

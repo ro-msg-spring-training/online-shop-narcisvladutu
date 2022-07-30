@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class LocationService {
+    private static final String ERROR_MESSAGE = "location not found for the id ";
     private final LocationRepository locationRepository;
 
     public void saveLocation(Location location) {
@@ -25,14 +26,14 @@ public class LocationService {
 
     public Optional<Location> findLocationById(final Integer id) {
         return Optional.ofNullable(locationRepository.findById(id).orElseThrow(
-                () -> new LocationException("location not found for the id " + id)));
+                () -> new LocationException(ERROR_MESSAGE + id)));
     }
 
     public void deleteLocation(Integer locationId) {
         if (locationRepository.existsById(locationId)) {
             locationRepository.deleteById(locationId);
         } else {
-            throw (new ProductCategoryException("location not found for the id " + locationId));
+            throw (new ProductCategoryException(ERROR_MESSAGE + locationId));
         }
     }
 }

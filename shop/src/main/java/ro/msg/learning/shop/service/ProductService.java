@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
+    private static final String ERROR_MESSAGE = "product not found for the id ";
     private final ProductRepository productRepository;
 
     public void saveProduct(Product product) {
@@ -25,18 +26,22 @@ public class ProductService {
 
     public Optional<Product> findProductById(final Integer id) {
         return Optional.ofNullable(productRepository.findById(id).orElseThrow(
-                () -> new ProductException("product not found for the id " + id)));
+                () -> new ProductException(ERROR_MESSAGE + id)));
     }
 
     public void deleteProduct(Integer productId) {
         if (productRepository.existsById(productId)) {
             productRepository.deleteById(productId);
         } else {
-            throw (new ProductCategoryException("product not found for the id " + productId));
+            throw (new ProductCategoryException(ERROR_MESSAGE + productId));
         }
     }
 
     public void updateProduct(final Product product) {
-        productRepository.save(product);
+        if (productRepository.existsById(product.getId())) {
+            productRepository.save(product);
+        } else {
+            throw (new ProductCategoryException(ERROR_MESSAGE+ product.getId()));
+        }
     }
 }

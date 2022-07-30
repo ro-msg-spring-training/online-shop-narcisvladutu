@@ -10,8 +10,10 @@ import ro.msg.learning.shop.repository.CustomerRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Service@RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class CustomerService {
+    private static final String ERROR_MESSAGE = "category not found for the id ";
     private final CustomerRepository customerRepository;
 
     public void saveCustomer(Customer customer) {
@@ -24,14 +26,14 @@ public class CustomerService {
 
     public Optional<Customer> findCustomerById(final Integer id) {
         return Optional.ofNullable(customerRepository.findById(id).orElseThrow(
-                () -> new CustomerException("customer not found for the id " + id)));
+                () -> new CustomerException(ERROR_MESSAGE + id)));
     }
 
     public void deleteCustomer(Integer customerId) {
         if (customerRepository.existsById(customerId)) {
             customerRepository.deleteById(customerId);
         } else {
-            throw (new ProductCategoryException("customer not found for the id " + customerId));
+            throw (new ProductCategoryException(ERROR_MESSAGE + customerId));
         }
     }
 }

@@ -13,6 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class SupplierService {
+    private static final String ERROR_MESSAGE = "supplier not found for the id ";
 
     private final SupplierRepository supplierRepository;
 
@@ -26,14 +27,14 @@ public class SupplierService {
 
     public Optional<Supplier> findSupplierById(final Integer id) {
         return Optional.ofNullable(supplierRepository.findById(id).orElseThrow(
-                () -> new SupplierException("supplier not found for the id " + id)));
+                () -> new SupplierException(ERROR_MESSAGE + id)));
     }
 
     public void deleteSupplier(Integer supplierID) {
         if (supplierRepository.existsById(supplierID)) {
             supplierRepository.deleteById(supplierID);
         } else {
-            throw (new ProductCategoryException("supplier not found for the id " + supplierID));
+            throw (new ProductCategoryException(ERROR_MESSAGE + supplierID));
         }
     }
 }
