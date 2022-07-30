@@ -2,8 +2,8 @@ package ro.msg.learning.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.exception.ProductCategoryException;
-import ro.msg.learning.shop.exception.SupplierException;
+import ro.msg.learning.shop.exception.entity_exception.ProductCategoryException;
+import ro.msg.learning.shop.exception.entity_exception.SupplierException;
 import ro.msg.learning.shop.model.Supplier;
 import ro.msg.learning.shop.repository.SupplierRepository;
 

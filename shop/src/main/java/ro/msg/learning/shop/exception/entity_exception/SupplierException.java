@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.exception;
+package ro.msg.learning.shop.exception.entity_exception;
 
 public class SupplierException extends RuntimeException {
     public SupplierException() {

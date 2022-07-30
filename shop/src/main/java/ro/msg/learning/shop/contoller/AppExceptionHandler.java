@@ -9,9 +9,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ro.msg.learning.shop.exception.ApiError;
-import ro.msg.learning.shop.exception.ProductCategoryException;
-import ro.msg.learning.shop.exception.ProductException;
-import ro.msg.learning.shop.exception.SupplierException;
+import ro.msg.learning.shop.exception.entity_exception.ProductCategoryException;
+import ro.msg.learning.shop.exception.entity_exception.ProductException;
+import ro.msg.learning.shop.exception.entity_exception.SupplierException;
 
 import java.time.LocalDateTime;
 

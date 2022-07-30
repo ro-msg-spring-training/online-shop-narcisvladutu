@@ -7,8 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductCategoryDto {
+public class LocationDto {
     private Integer id;
     private String name;
-    private String description;
+    private String addressCountry;
+    private String addressCity;
+    private String addressCounty;
+    private String addressStreetAddress;
 }
