@@ -35,4 +35,8 @@ public class ProductService {
             throw (new ProductCategoryException("product not found for the id " + productId));
         }
     }
+
+    public void updateProduct(final Product product) {
+        productRepository.save(product);
+    }
 }

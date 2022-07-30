@@ -42,13 +42,26 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/categories/{id}")
+    @DeleteMapping("/products/{id}")
     public void deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
     }
 
-    @GetMapping("/categories/{id}")
+    @GetMapping("/products/{id}")
     public ProductDto findProductCategoryById(@PathVariable Integer id) {
         return productService.findProductById(id).map(productMapper::toDto).orElseThrow();
+    }
+
+    @PutMapping(value = "/products/{id}")
+    public void updateProduct(@PathVariable("id") final Integer id, @RequestBody final ProductDtoSave productDtoSave) {
+        Optional<ProductCategory> productCategoryOptional = productCategoryService.findProductCategoryById(productDtoSave.getProductCategoryId());
+        Optional<Supplier> supplierOptional = supplierService.findSupplierById(productDtoSave.getSupplierId());
+        if (productCategoryOptional.isPresent() && supplierOptional.isPresent()) {
+            ProductCategory productCategory = productCategoryOptional.get();
+            Supplier supplier = supplierOptional.get();
+            final Product product = productMapper.toProduct(productDtoSave, productCategory, supplier);
+            product.setId(id);
+            productService.updateProduct(product);
+        }
     }
 }
