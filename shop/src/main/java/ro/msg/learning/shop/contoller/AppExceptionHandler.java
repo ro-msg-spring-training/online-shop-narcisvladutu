@@ -10,13 +10,15 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ro.msg.learning.shop.exception.ApiError;
 import ro.msg.learning.shop.exception.ProductCategoryException;
+import ro.msg.learning.shop.exception.ProductException;
+import ro.msg.learning.shop.exception.SupplierException;
 
 import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(ProductCategoryException.class)
-    public ResponseEntity<Object> handleEntityNotFound(RuntimeException exception, WebRequest request) {
+    @ExceptionHandler({ProductCategoryException.class, SupplierException.class, ProductException.class})
+    public ResponseEntity<Object> handleEntityNotFound(RuntimeException exception) {
         return new ResponseEntity<>(new ApiError(exception.getMessage(), HttpStatus.NOT_FOUND, LocalDateTime.now()),
                 HttpStatus.NOT_FOUND);
     }

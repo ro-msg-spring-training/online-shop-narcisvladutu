@@ -22,7 +22,7 @@ public class ProductCategoryService {
         return productCategoryRepository.findAll();
     }
 
-    public Optional<ProductCategory> getProductCategoryById(final Integer id) {
+    public Optional<ProductCategory> findProductCategoryById(final Integer id) {
         return Optional.ofNullable(productCategoryRepository.findById(id).orElseThrow(
                 () -> new ProductCategoryException("category not found for the id " + id)));
     }

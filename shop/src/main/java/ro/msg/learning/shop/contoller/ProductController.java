@@ -33,12 +33,22 @@ public class ProductController {
     @PostMapping("/products")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveProduct(@RequestBody ProductDtoSave productDtoSave) {
-        Optional<ProductCategory> productCategoryOptional = productCategoryService.getProductCategoryById(productDtoSave.getProductCategoryId());
-        Optional<Supplier> supplierOptional = supplierService.getSupplierById(productDtoSave.getSupplierId());
+        Optional<ProductCategory> productCategoryOptional = productCategoryService.findProductCategoryById(productDtoSave.getProductCategoryId());
+        Optional<Supplier> supplierOptional = supplierService.findSupplierById(productDtoSave.getSupplierId());
         if (productCategoryOptional.isPresent() && supplierOptional.isPresent()) {
             ProductCategory productCategory = productCategoryOptional.get();
             Supplier supplier = supplierOptional.get();
             productService.saveProduct(productMapper.toProduct(productDtoSave, productCategory, supplier));
         }
+    }
+
+    @DeleteMapping("/categories/{id}")
+    public void deleteProduct(@PathVariable Integer id) {
+        productService.deleteProduct(id);
+    }
+
+    @GetMapping("/categories/{id}")
+    public ProductDto findProductCategoryById(@PathVariable Integer id) {
+        return productService.findProductById(id).map(productMapper::toDto).orElseThrow();
     }
 }

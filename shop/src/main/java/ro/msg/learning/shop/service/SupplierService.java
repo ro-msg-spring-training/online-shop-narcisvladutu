@@ -24,7 +24,7 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    public Optional<Supplier> getSupplierById(final Integer id) {
+    public Optional<Supplier> findSupplierById(final Integer id) {
         return Optional.ofNullable(supplierRepository.findById(id).orElseThrow(
                 () -> new SupplierException("supplier not found for the id " + id)));
     }
