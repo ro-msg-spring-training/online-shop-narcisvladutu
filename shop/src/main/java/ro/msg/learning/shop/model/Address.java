@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Embeddable
 @AttributeOverride(name = "country", column = @Column(name = "country"))
@@ -16,7 +18,10 @@ import javax.persistence.Embeddable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+public class Address implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -2936687026040726549L;
+
     private String country;
     private String city;
     private String county;

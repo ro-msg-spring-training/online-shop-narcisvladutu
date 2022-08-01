@@ -29,6 +29,10 @@ public class StockService {
                 () -> new StockException(ERROR_MESSAGE + id)));
     }
 
+    public Optional<Stock> findStockByLocationAndProduct(final Integer locationId, final Integer productId) {
+        return Optional.ofNullable(stockRepository.findByLocationAndProduct(locationId, productId));
+    }
+
     public void deleteStock(Integer productId) {
         if (stockRepository.existsById(productId)) {
             stockRepository.deleteById(productId);
@@ -45,9 +49,18 @@ public class StockService {
         }
     }
 
-    public void updateStockQuantity(final Stock stock, final Integer newQuantity) {
+    public void updateStock(final Integer locationId, final Integer productId, final Integer quantity) {
+        Optional<Stock> stock = findStockByLocationAndProduct(locationId, productId);
+        if (stock.isPresent()) {
+            updateStockQuantity(stock.get(), quantity);
+        } else {
+            throw new StockException(ERROR_MESSAGE);
+        }
+    }
+
+    public void updateStockQuantity(final Stock stock, final Integer takenQuantity) {
         if (stockRepository.existsById(stock.getId())) {
-            stock.setQuantity(newQuantity);
+            stock.setQuantity(stock.getQuantity() - takenQuantity);
             stockRepository.save(stock);
         } else {
             throw (new StockException(ERROR_MESSAGE + stock.getId()));

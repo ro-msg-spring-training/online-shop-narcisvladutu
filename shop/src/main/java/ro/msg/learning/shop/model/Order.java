@@ -15,10 +15,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Order extends BaseEntity<Integer> {
     @ManyToOne
-    @JoinColumn(name = "shipped_from", nullable = false)
-    private Location locationShippedFrom;
-
-    @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
