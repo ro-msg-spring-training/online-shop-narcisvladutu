@@ -1,6 +1,5 @@
 package ro.msg.learning.shop.service.strategy_utils;
 
-import ro.msg.learning.shop.dto.OrderDtoSave;
 import ro.msg.learning.shop.model.Order;
 import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.repository.OrderDetailRepository;
@@ -11,9 +10,7 @@ import java.util.List;
 public abstract class StrategyService {
     protected OrderDetailRepository orderDetailRepository;
 
-    public abstract List<OrderDetail> generateOrderDetails(OrderDtoSave orderDtoSave);
-
-    public abstract String getStrategy();
+    public abstract List<OrderDetail> generateOrderDetailsLocation(List<OrderDetail> orderDetails);
 
     protected StockService stockService;
 

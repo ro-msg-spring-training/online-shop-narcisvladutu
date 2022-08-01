@@ -1,8 +1,6 @@
 package ro.msg.learning.shop.service.strategy_utils;
 
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.dto.OrderDetailDtoSave;
-import ro.msg.learning.shop.dto.OrderDtoSave;
 import ro.msg.learning.shop.model.Location;
 import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.model.Product;
@@ -30,25 +28,16 @@ public class MostAbundantStrategy extends StrategyService {
     }
 
     @Override
-    public List<OrderDetail> generateOrderDetails(OrderDtoSave orderDto) {
-        final List<OrderDetail> orderDetails = new ArrayList<>();
-
-        final List<OrderDetailDtoSave> orderDetailDtoList = orderDto.getOrderDetailDtoSaveList();
-
-
-        for (final OrderDetailDtoSave orderDetailDtoSave : orderDetailDtoList) {
-            final Integer productId = orderDetailDtoSave.getProductId();
-            final Integer quantity = orderDetailDtoSave.getQuantity();
+    public List<OrderDetail> generateOrderDetailsLocation(List<OrderDetail> orderDetails) {
+        List<OrderDetail> orderDetailsWithLocation = new ArrayList<>();
+        for (final OrderDetail orderDetail : orderDetails) {
+            final Integer productId = orderDetail.getProduct().getId();
+            final Integer quantity = orderDetail.getQuantity();
             final Location shippingLocation = locationService.getProductMostAbundantShippingLocation(productId,
                     quantity);
             final Product product = productService.findProductById(productId).orElseThrow();
-            orderDetails.add(new OrderDetail(null, product, shippingLocation, quantity));
+            orderDetailsWithLocation.add(new OrderDetail(null, product, shippingLocation, quantity));
         }
-        return orderDetails;
-    }
-
-    @Override
-    public String getStrategy() {
-        return "most_abundant";
+        return orderDetailsWithLocation;
     }
 }

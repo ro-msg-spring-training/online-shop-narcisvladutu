@@ -1,41 +1,37 @@
 package ro.msg.learning.shop.configuration;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import ro.msg.learning.shop.repository.OrderDetailRepository;
+import ro.msg.learning.shop.service.LocationService;
+import ro.msg.learning.shop.service.ProductService;
+import ro.msg.learning.shop.service.StockService;
+import ro.msg.learning.shop.service.strategy_utils.MostAbundantStrategy;
+import ro.msg.learning.shop.service.strategy_utils.SingleLocationStrategy;
 import ro.msg.learning.shop.service.strategy_utils.StrategyService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @Configuration
+@RequiredArgsConstructor
 public class OrderConfiguration {
-    @Value("${strategy:single_location}")
+    @Value("${strategy:most_abundant}")
     private String strategyName;
 
-    private final Map<String, StrategyService> availableOrderDetailServices;
-
-    public OrderConfiguration(final List<StrategyService> strategyImplementations) {
-        availableOrderDetailServices = getStrategyImplementationsMap(strategyImplementations);
-    }
-
-    private Map<String, StrategyService> getStrategyImplementationsMap(
-            final List<StrategyService> strategyImplementations) {
-        final Map<String, StrategyService> orderDetailServices = new HashMap<>();
-
-        for (final StrategyService strategy : strategyImplementations) {
-            orderDetailServices.put(strategy.getStrategy(), strategy);
-        }
-
-        return orderDetailServices;
-    }
+    private final LocationService locationService;
+    private final ProductService productService;
+    private final OrderDetailRepository orderDetailRepository;
+    private final StockService stockService;
 
     @Bean
     @Primary
-    public StrategyService strategy() {
-        return availableOrderDetailServices.get(strategyName);
+    public StrategyService strategyService() {
+        if (strategyName.equals("single_location")) {
+            return new SingleLocationStrategy(locationService, productService, orderDetailRepository, stockService);
+        } else {
+            return new MostAbundantStrategy(locationService, productService, orderDetailRepository, stockService);
+        }
     }
 }

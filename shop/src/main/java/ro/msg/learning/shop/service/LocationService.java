@@ -2,11 +2,11 @@ package ro.msg.learning.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.dto.OrderDetailDtoSave;
 import ro.msg.learning.shop.exception.entity_exception.LocationException;
 import ro.msg.learning.shop.exception.entity_exception.ProductCategoryException;
 import ro.msg.learning.shop.exception.entity_exception.ProductException;
 import ro.msg.learning.shop.model.Location;
+import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.repository.LocationRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
@@ -44,36 +44,40 @@ public class LocationService {
         }
     }
 
-    public Location getSingleShippingLocation(final List<OrderDetailDtoSave> orderDetailDtoList) {
+    public Location getSingleShippingLocation(final List<OrderDetail> orderDetails) {
         final List<List<Location>> validShippingLocationsPerProduct = getAllValidLocationsForProduct(
-                orderDetailDtoList);
+                orderDetails);
 
-        return computeSingleShippingLocation(validShippingLocationsPerProduct);
+        return findCommonShippingLocation(validShippingLocationsPerProduct);
     }
 
 
     public Location getProductMostAbundantShippingLocation(final Integer productId, final Integer quantity) {
-        validateProductIdExistence(productId);
+        validateProduct(productId);
 
         final Location shippingLocation = locationRepository.findMostAbundantShippingLocation(productId, quantity);
 
-        validateLocationNotNull(shippingLocation, productId);
+        if (shippingLocation == null) {
+            throw new LocationException(ERROR_MESSAGE + productId);
+        }
 
         return shippingLocation;
     }
 
-    private List<List<Location>> getAllValidLocationsForProduct(final List<OrderDetailDtoSave> orderDetailDtoSaveList) {
+    private List<List<Location>> getAllValidLocationsForProduct(final List<OrderDetail> orderDetails) {
         final List<List<Location>> validShippingLocationsPerProduct = new ArrayList<>();
 
-        orderDetailDtoSaveList.forEach(orderDetailDtoSave -> {
-            final Integer productId = orderDetailDtoSave.getProductId();
-            final Integer quantity = orderDetailDtoSave.getQuantity();
+        orderDetails.forEach(orderDetail -> {
+            final Integer productId = orderDetail.getProduct().getId();
+            final Integer quantity = orderDetail.getQuantity();
 
-            validateProductIdExistence(productId);
+            validateProduct(productId);
 
             final List<Location> shippingLocationsForCurrentProduct = locationRepository.findAllAvailableShippingLocations(productId, quantity);
 
-            validateShippingLocationsForCurrentProductNotEmpty(shippingLocationsForCurrentProduct, productId);
+            if (shippingLocationsForCurrentProduct.isEmpty()) {
+                throw new LocationException(ERROR_MESSAGE + productId);
+            }
 
             validShippingLocationsPerProduct.add(shippingLocationsForCurrentProduct);
         });
@@ -81,39 +85,22 @@ public class LocationService {
         return validShippingLocationsPerProduct;
     }
 
-    private Location computeSingleShippingLocation(final List<List<Location>> allValidShippingLocationsPerProduct) {
+    private Location findCommonShippingLocation(final List<List<Location>> allValidShippingLocationsPerProduct) {
         List<Location> validCommonLocations = allValidShippingLocationsPerProduct.get(0);
 
         allValidShippingLocationsPerProduct.forEach(validCommonLocations::retainAll);
 
-        validateCommonLocationExistence(validCommonLocations);
+        if (validCommonLocations.isEmpty()) {
+            throw new LocationException("common location not found");
+        }
 
         return validCommonLocations.get(0);
     }
 
-    private void validateProductIdExistence(final Integer productId) {
+    private void validateProduct(final Integer productId) {
         final Optional<Product> product = productRepository.findById(productId);
-
         if (product.isEmpty()) {
             throw new ProductException("product not found for the id " + productId);
-        }
-    }
-
-    private void validateShippingLocationsForCurrentProductNotEmpty(final List<Location> validShippingLocationsForCurrentProduct, final Integer productId) {
-        if (validShippingLocationsForCurrentProduct == null || validShippingLocationsForCurrentProduct.isEmpty()) {
-            throw new LocationException(ERROR_MESSAGE + productId);
-        }
-    }
-
-    private void validateLocationNotNull(final Location shippingLocation, final Integer productId) {
-        if (shippingLocation == null) {
-            throw new LocationException(ERROR_MESSAGE + productId);
-        }
-    }
-
-    private void validateCommonLocationExistence(final List<Location> suitableShippingLocations) {
-        if (suitableShippingLocations == null || suitableShippingLocations.isEmpty()) {
-            throw new LocationException("common location not found");
         }
     }
 }
