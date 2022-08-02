@@ -63,12 +63,12 @@ public class ProductService {
                 Supplier supplier = supplierOptional.get();
                 product.setCategory(productCategory);
                 product.setSupplier(supplier);
+                productRepository.save(product);
             } else {
                 throw new ProductException("invalid arguments for product with the id" + product.getId());
             }
-            productRepository.save(product);
         } else {
-            throw (new ProductCategoryException(ERROR_MESSAGE + product.getId()));
+            throw (new ProductException(ERROR_MESSAGE + product.getId()));
         }
     }
 }
