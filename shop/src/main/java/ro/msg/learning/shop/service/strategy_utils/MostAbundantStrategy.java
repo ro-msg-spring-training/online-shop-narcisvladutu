@@ -28,7 +28,7 @@ public class MostAbundantStrategy extends StrategyService {
     }
 
     @Override
-    public List<OrderDetail> generateOrderDetailsLocation(List<OrderDetail> orderDetails) {
+    public List<OrderDetail> findOrderDetailsLocation(List<OrderDetail> orderDetails) {
         List<OrderDetail> orderDetailsWithLocation = new ArrayList<>();
         for (final OrderDetail orderDetail : orderDetails) {
             final Integer productId = orderDetail.getProduct().getId();

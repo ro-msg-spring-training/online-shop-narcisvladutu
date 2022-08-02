@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class StrategyService {
     protected OrderDetailRepository orderDetailRepository;
 
-    public abstract List<OrderDetail> generateOrderDetailsLocation(List<OrderDetail> orderDetails);
+    public abstract List<OrderDetail> findOrderDetailsLocation(List<OrderDetail> orderDetails);
 
     protected StockService stockService;
 

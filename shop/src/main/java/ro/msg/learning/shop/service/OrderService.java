@@ -21,12 +21,12 @@ public class OrderService {
     @Transactional
     public void saveOrder(Order order, List<OrderDetail> orderDetails) {
         if (orderDetails.isEmpty()) {
-            throw new OrderDetailException();
+            throw new OrderDetailException("put some products in your shopping cart");
         }
 
         orderRepository.save(order);
 
-        List<OrderDetail> orderDetailsWithLocation = strategyService.generateOrderDetailsLocation(orderDetails);
+        List<OrderDetail> orderDetailsWithLocation = strategyService.findOrderDetailsLocation(orderDetails);
         strategyService.addOrderToOrderDetails(order, orderDetailsWithLocation);
     }
 }

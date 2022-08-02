@@ -18,7 +18,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class LocationService {
-    private static final String ERROR_MESSAGE = "location not found for the id ";
+    private static final String ERROR_MESSAGE_LOCATION = "location not found for the id ";
+    private static final String ERROR_MESSAGE_PRODUCT = "product not found for the id ";
+    private static final String ERROR_MESSAGE_SUITABLE_LOCATION = "common location not found";
     private final LocationRepository locationRepository;
 
     private final ProductRepository productRepository;
@@ -33,14 +35,14 @@ public class LocationService {
 
     public Optional<Location> findLocationById(final Integer id) {
         return Optional.ofNullable(locationRepository.findById(id).orElseThrow(
-                () -> new LocationException(ERROR_MESSAGE + id)));
+                () -> new LocationException(ERROR_MESSAGE_LOCATION + id)));
     }
 
     public void deleteLocation(Integer locationId) {
         if (locationRepository.existsById(locationId)) {
             locationRepository.deleteById(locationId);
         } else {
-            throw (new ProductCategoryException(ERROR_MESSAGE + locationId));
+            throw (new ProductCategoryException(ERROR_MESSAGE_LOCATION + locationId));
         }
     }
 
@@ -58,7 +60,7 @@ public class LocationService {
         final Location shippingLocation = locationRepository.findMostAbundantShippingLocation(productId, quantity);
 
         if (shippingLocation == null) {
-            throw new LocationException(ERROR_MESSAGE + productId);
+            throw new LocationException(ERROR_MESSAGE_LOCATION + productId);
         }
 
         return shippingLocation;
@@ -76,7 +78,7 @@ public class LocationService {
             final List<Location> shippingLocationsForCurrentProduct = locationRepository.findAllAvailableShippingLocations(productId, quantity);
 
             if (shippingLocationsForCurrentProduct.isEmpty()) {
-                throw new LocationException(ERROR_MESSAGE + productId);
+                throw new LocationException(ERROR_MESSAGE_LOCATION + productId);
             }
 
             validShippingLocationsPerProduct.add(shippingLocationsForCurrentProduct);
@@ -91,7 +93,7 @@ public class LocationService {
         allValidShippingLocationsPerProduct.forEach(validCommonLocations::retainAll);
 
         if (validCommonLocations.isEmpty()) {
-            throw new LocationException("common location not found");
+            throw new LocationException(ERROR_MESSAGE_SUITABLE_LOCATION);
         }
 
         return validCommonLocations.get(0);
@@ -100,7 +102,7 @@ public class LocationService {
     private void validateProduct(final Integer productId) {
         final Optional<Product> product = productRepository.findById(productId);
         if (product.isEmpty()) {
-            throw new ProductException("product not found for the id " + productId);
+            throw new ProductException(ERROR_MESSAGE_PRODUCT + productId);
         }
     }
 }

@@ -27,7 +27,7 @@ public class SingleLocationStrategy extends StrategyService {
     private final ProductService productService;
 
     @Override
-    public List<OrderDetail> generateOrderDetailsLocation(List<OrderDetail> orderDetails) {
+    public List<OrderDetail> findOrderDetailsLocation(List<OrderDetail> orderDetails) {
         List<OrderDetail> orderDetailsWithLocation = new ArrayList<>();
 
         final Location shippingLocation = locationService.getSingleShippingLocation(orderDetails);
