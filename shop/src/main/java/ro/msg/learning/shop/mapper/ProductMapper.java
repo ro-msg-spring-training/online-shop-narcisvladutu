@@ -24,7 +24,11 @@ public class ProductMapper {
         return new ProductDto(id, name, description, price, weight, category.getName(), supplier.getName());
     }
 
-    public Product toProduct(ProductDtoSave productDtoSave, ProductCategory productCategory, Supplier supplier) {
+    public Product toProduct(ProductDtoSave productDtoSave) {
+        Supplier supplier = new Supplier();
+        ProductCategory productCategory = new ProductCategory();
+        supplier.setId(productDtoSave.getSupplierId());
+        productCategory.setId(productDtoSave.getProductCategoryId());
         return new Product(
                 productDtoSave.getName(),
                 productDtoSave.getDescription(),
