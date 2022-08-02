@@ -22,17 +22,7 @@ public class StockService {
     private final LocationRepository locationRepository;
 
     public void saveStock(Stock stock) {
-        Optional<Product> productOptional = productRepository.findById(stock.getProduct().getId());
-        Optional<Location> locationOptional = locationRepository.findById(stock.getLocation().getId());
-        if (productOptional.isPresent() && locationOptional.isPresent()) {
-            Product product = productOptional.get();
-            Location location = locationOptional.get();
-            stock.setLocation(location);
-            stock.setProduct(product);
-            stockRepository.save(stock);
-        } else {
-            throw new StockException("invalid arguments for stock with the id" + stock.getId());
-        }
+        save(stock);
     }
 
     public List<Stock> findAllStocks() {
@@ -58,17 +48,7 @@ public class StockService {
 
     public void updateStock(final Stock stock) {
         if (stockRepository.existsById(stock.getId())) {
-            Optional<Product> productOptional = productRepository.findById(stock.getProduct().getId());
-            Optional<Location> locationOptional = locationRepository.findById(stock.getLocation().getId());
-            if (productOptional.isPresent() && locationOptional.isPresent()) {
-                Product product = productOptional.get();
-                Location location = locationOptional.get();
-                stock.setLocation(location);
-                stock.setProduct(product);
-                stockRepository.save(stock);
-            } else {
-                throw new StockException("invalid arguments for stock with the id" + stock.getId());
-            }
+            stockRepository.save(stock);
         } else {
             throw (new StockException(ERROR_MESSAGE + stock.getId()));
         }
@@ -89,6 +69,20 @@ public class StockService {
             stockRepository.save(stock);
         } else {
             throw (new StockException(ERROR_MESSAGE + stock.getId()));
+        }
+    }
+
+    private void save(Stock stock) {
+        Optional<Product> productOptional = productRepository.findById(stock.getProduct().getId());
+        Optional<Location> locationOptional = locationRepository.findById(stock.getLocation().getId());
+        if (productOptional.isPresent() && locationOptional.isPresent()) {
+            Product product = productOptional.get();
+            Location location = locationOptional.get();
+            stock.setLocation(location);
+            stock.setProduct(product);
+            stockRepository.save(stock);
+        } else {
+            throw new StockException("invalid arguments for stock with the id" + stock.getId());
         }
     }
 }

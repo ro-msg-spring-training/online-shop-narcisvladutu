@@ -15,7 +15,9 @@ public class OrderMapper {
                 order.getAddress().getStreetAddress());
     }
 
-    public Order toOrder(OrderDtoSave orderDtoSave, Customer customer) {
+    public Order toOrder(OrderDtoSave orderDtoSave) {
+        Customer customer = new Customer();
+        customer.setId(orderDtoSave.getCustomerId());
         return new Order(customer, orderDtoSave.getCreatedAt(), new Address(orderDtoSave.getAddressCountry(),
                 orderDtoSave.getAddressCity(), orderDtoSave.getAddressCounty(), orderDtoSave.getAddressStreetAddress()));
     }

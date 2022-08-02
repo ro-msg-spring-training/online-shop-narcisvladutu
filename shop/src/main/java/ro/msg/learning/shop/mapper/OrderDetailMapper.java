@@ -14,7 +14,9 @@ public class OrderDetailMapper {
         return new OrderDetailDto(orderDetail.getOrder().getId(), orderDetail.getProduct().getName(), orderDetail.getQuantity());
     }
 
-    public OrderDetail toOrderDetail(OrderDetailDtoSave orderDetailDtoSave, Product product) {
+    public OrderDetail toOrderDetail(OrderDetailDtoSave orderDetailDtoSave) {
+        Product product = new Product();
+        product.setId(orderDetailDtoSave.getProductId());
         return new OrderDetail(null, product, null, orderDetailDtoSave.getQuantity());
     }
 }

@@ -24,17 +24,7 @@ public class ProductService {
     private final ProductCategoryRepository productCategoryRepository;
 
     public void saveProduct(Product product) {
-        Optional<ProductCategory> productCategoryOptional = productCategoryRepository.findById(product.getCategory().getId());
-        Optional<Supplier> supplierOptional = supplierRepository.findById(product.getSupplier().getId());
-        if (productCategoryOptional.isPresent() && supplierOptional.isPresent()) {
-            ProductCategory productCategory = productCategoryOptional.get();
-            Supplier supplier = supplierOptional.get();
-            product.setCategory(productCategory);
-            product.setSupplier(supplier);
-            productRepository.save(product);
-        } else {
-            throw new ProductException("invalid arguments for product with the id" + product.getId());
-        }
+        save(product);
     }
 
     public List<Product> findAllProducts() {
@@ -56,19 +46,23 @@ public class ProductService {
 
     public void updateProduct(final Product product) {
         if (productRepository.existsById(product.getId())) {
-            Optional<ProductCategory> productCategoryOptional = productCategoryRepository.findById(product.getCategory().getId());
-            Optional<Supplier> supplierOptional = supplierRepository.findById(product.getSupplier().getId());
-            if (productCategoryOptional.isPresent() && supplierOptional.isPresent()) {
-                ProductCategory productCategory = productCategoryOptional.get();
-                Supplier supplier = supplierOptional.get();
-                product.setCategory(productCategory);
-                product.setSupplier(supplier);
-                productRepository.save(product);
-            } else {
-                throw new ProductException("invalid arguments for product with the id" + product.getId());
-            }
+            save(product);
         } else {
             throw (new ProductException(ERROR_MESSAGE + product.getId()));
+        }
+    }
+
+    private void save(Product product) {
+        Optional<ProductCategory> productCategoryOptional = productCategoryRepository.findById(product.getCategory().getId());
+        Optional<Supplier> supplierOptional = supplierRepository.findById(product.getSupplier().getId());
+        if (productCategoryOptional.isPresent() && supplierOptional.isPresent()) {
+            ProductCategory productCategory = productCategoryOptional.get();
+            Supplier supplier = supplierOptional.get();
+            product.setCategory(productCategory);
+            product.setSupplier(supplier);
+            productRepository.save(product);
+        } else {
+            throw new ProductException("invalid arguments for product with the id" + product.getId());
         }
     }
 }
