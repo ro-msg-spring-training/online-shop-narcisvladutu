@@ -19,7 +19,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public void saveOrder(Order order, List<OrderDetail> orderDetails) {
+    public Order saveOrder(Order order, List<OrderDetail> orderDetails) {
         if (orderDetails.isEmpty()) {
             throw new OrderDetailException("put some products in your shopping cart");
         }
@@ -28,5 +28,7 @@ public class OrderService {
 
         List<OrderDetail> orderDetailsWithLocation = strategyService.findOrderDetailsLocation(orderDetails);
         strategyService.addOrderToOrderDetails(order, orderDetailsWithLocation);
+
+        return order;
     }
 }
