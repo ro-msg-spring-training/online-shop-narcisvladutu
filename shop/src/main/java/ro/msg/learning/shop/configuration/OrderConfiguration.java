@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.service.LocationService;
-import ro.msg.learning.shop.service.ProductService;
 import ro.msg.learning.shop.service.StockService;
 import ro.msg.learning.shop.service.strategy_utils.MostAbundantStrategy;
 import ro.msg.learning.shop.service.strategy_utils.SingleLocationStrategy;
@@ -21,7 +20,6 @@ public class OrderConfiguration {
     private String strategyName;
 
     private final LocationService locationService;
-    private final ProductService productService;
     private final OrderDetailRepository orderDetailRepository;
     private final StockService stockService;
 
@@ -29,9 +27,9 @@ public class OrderConfiguration {
     @Primary
     public StrategyService strategyService() {
         if (strategyName.equals("single_location")) {
-            return new SingleLocationStrategy(locationService, productService, orderDetailRepository, stockService);
+            return new SingleLocationStrategy(locationService, orderDetailRepository, stockService);
         } else {
-            return new MostAbundantStrategy(locationService, productService, orderDetailRepository, stockService);
+            return new MostAbundantStrategy(locationService, orderDetailRepository, stockService);
         }
     }
 }
