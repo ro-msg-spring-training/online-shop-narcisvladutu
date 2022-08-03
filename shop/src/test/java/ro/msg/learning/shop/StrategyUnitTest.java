@@ -2,13 +2,11 @@ package ro.msg.learning.shop;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import ro.msg.learning.shop.configuration.LocationRepositoryTestConfiguration;
+import ro.msg.learning.shop.configuration.StrategyUnitTestConfiguration;
 import ro.msg.learning.shop.exception.entity_exception.LocationException;
 import ro.msg.learning.shop.exception.entity_exception.ProductException;
 import ro.msg.learning.shop.model.*;
@@ -25,9 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @DataJpaTest
-@ExtendWith(MockitoExtension.class)
-@Import(LocationRepositoryTestConfiguration.class)
-class LocationRepositoryTest {
+@Import(StrategyUnitTestConfiguration.class)
+class StrategyUnitTest {
+    //unit testing
+
     @Autowired
     private LocationRepository locationRepository;
     @Autowired
