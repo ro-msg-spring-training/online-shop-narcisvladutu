@@ -5,7 +5,6 @@ import ro.msg.learning.shop.model.Location;
 import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.service.LocationService;
-import ro.msg.learning.shop.service.StockService;
 
 import java.util.ArrayList;
 import java.util.List;

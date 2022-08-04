@@ -22,6 +22,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+//not mock
 @DataJpaTest
 @Import(StrategyUnitTestConfiguration.class)
 class StrategyUnitTest {
@@ -131,7 +132,8 @@ class StrategyUnitTest {
 
     @Test
     void shouldFindMostAbundantShippingLocation() {
-        assertEquals(mostAbundantStrategy.getClass(), MostAbundantStrategy.class);
+        assertEquals(mostAbundantStrategy.getClass(),
+                MostAbundantStrategy.class);
 
         OrderDetail orderDetail = new OrderDetail(null, product1, null, 4);
         OrderDetail orderDetail1 = new OrderDetail(null, product2, null, 3);
