@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({ProductCategoryException.class, SupplierException.class, ProductException.class,
-            LocationException.class, OrderDetailException.class, OrderException.class,
+            LocationException.class, OrderDetailException.class,
             StockException.class, CustomerException.class})
     public ResponseEntity<Object> handleEntityNotFound(RuntimeException exception) {
         return new ResponseEntity<>(new ApiError(exception.getMessage(), HttpStatus.NOT_FOUND, LocalDateTime.now()),
