@@ -18,16 +18,15 @@ import ro.msg.learning.shop.service.strategy_utils.StrategyService;
 public class StrategyUnitTestConfiguration {
     private final LocationService locationService;
     private final OrderDetailRepository orderDetailRepository;
-    private final StockService stockService;
 
     @Bean
     @Primary
     public StrategyService strategyService() {
-        return new MostAbundantStrategy(locationService, orderDetailRepository, stockService);
+        return new MostAbundantStrategy(locationService, orderDetailRepository);
     }
 
     @Bean(name = "singleLocationStrategy")
     public StrategyService strategyService2() {
-        return new SingleLocationStrategy(locationService, orderDetailRepository, stockService);
+        return new SingleLocationStrategy(locationService, orderDetailRepository);
     }
 }

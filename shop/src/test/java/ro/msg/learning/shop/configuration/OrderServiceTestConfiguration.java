@@ -26,6 +26,6 @@ public class OrderServiceTestConfiguration {
 
     @Bean
     public OrderService orderService() {
-        return new OrderService(new MostAbundantStrategy(locationService, orderDetailRepository, stockService), orderRepository, customerRepository, productRepository);
+        return new OrderService(new MostAbundantStrategy(locationService, orderDetailRepository), orderRepository, orderDetailRepository, customerRepository, productRepository, stockService);
     }
 }

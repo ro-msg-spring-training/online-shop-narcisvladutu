@@ -5,7 +5,6 @@ import ro.msg.learning.shop.model.Location;
 import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.service.LocationService;
-import ro.msg.learning.shop.service.StockService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +12,9 @@ import java.util.List;
 @Service
 public class SingleLocationStrategy extends StrategyService {
     public SingleLocationStrategy(final LocationService locationService,
-                                  final OrderDetailRepository orderDetailRepository,
-                                  final StockService stockService) {
+                                  final OrderDetailRepository orderDetailRepository) {
         this.locationService = locationService;
         this.orderDetailRepository = orderDetailRepository;
-        this.stockService = stockService;
     }
 
     private final LocationService locationService;

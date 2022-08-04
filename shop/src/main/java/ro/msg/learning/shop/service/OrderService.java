@@ -10,6 +10,7 @@ import ro.msg.learning.shop.model.Order;
 import ro.msg.learning.shop.model.OrderDetail;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.repository.CustomerRepository;
+import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.repository.OrderRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.service.strategy_utils.StrategyService;
@@ -24,8 +25,11 @@ import java.util.Optional;
 public class OrderService {
     private final StrategyService strategyService;
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     private final CustomerRepository customerRepository;
     private final ProductRepository productRepository;
+
+    protected StockService stockService;
 
     @Transactional
     public Order saveOrder(Order order, List<OrderDetail> orderDetails) {
@@ -48,11 +52,23 @@ public class OrderService {
             });
 
             List<OrderDetail> orderDetailsWithLocation = strategyService.findOrderDetailsLocation(orderDetails);
-            strategyService.addOrderToOrderDetails(order, orderDetailsWithLocation);
+            addOrderToOrderDetails(order, orderDetailsWithLocation);
 
             return order;
         } else {
             throw new CustomerException("customer not found!");
         }
+    }
+
+    public void addOrderToOrderDetails(final Order order, final List<OrderDetail> orderDetails) {
+        orderDetails.forEach(orderDetail -> {
+            orderDetail.setOrder(order);
+            orderDetailRepository.save(orderDetail);
+        });
+        updateStocks(orderDetails);
+    }
+
+    private void updateStocks(final List<OrderDetail> orderDetails) {
+        orderDetails.forEach(orderDetail -> stockService.updateStock(orderDetail.getLocation().getId(), orderDetail.getProduct().getId(), orderDetail.getQuantity()));
     }
 }

@@ -15,11 +15,9 @@ public class MostAbundantStrategy extends StrategyService {
     private final LocationService locationService;
 
     public MostAbundantStrategy(final LocationService locationService,
-                                final OrderDetailRepository orderDetailRepository,
-                                final StockService stockService) {
+                                final OrderDetailRepository orderDetailRepository) {
         this.locationService = locationService;
         this.orderDetailRepository = orderDetailRepository;
-        this.stockService = stockService;
     }
 
     @Override
