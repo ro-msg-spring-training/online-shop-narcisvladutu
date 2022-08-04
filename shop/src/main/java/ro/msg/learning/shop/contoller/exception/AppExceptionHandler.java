@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.contoller;
+package ro.msg.learning.shop.contoller.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

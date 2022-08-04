@@ -1,5 +1,7 @@
 package ro.msg.learning.shop.exception.entity_exception;
 
+import java.util.function.Supplier;
+
 public class CustomerException extends RuntimeException {
     public CustomerException() {
         super();

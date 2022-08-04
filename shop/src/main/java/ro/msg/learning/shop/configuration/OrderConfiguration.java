@@ -16,8 +16,12 @@ import ro.msg.learning.shop.service.strategy_utils.StrategyService;
 @Configuration
 @RequiredArgsConstructor
 public class OrderConfiguration {
-    @Value("${strategy:most_abundant}")
-    private String strategyName;
+    @Value("${strategy}")
+    private Strategy strategyName;
+
+    private enum Strategy {
+        MOST_ABUNDANT, SINGLE_LOCATION
+    }
 
     private final LocationService locationService;
     private final OrderDetailRepository orderDetailRepository;
@@ -26,10 +30,9 @@ public class OrderConfiguration {
     @Bean
     @Primary
     public StrategyService strategyService() {
-        if (strategyName.equals("single_location")) {
-            return new SingleLocationStrategy(locationService, orderDetailRepository, stockService);
-        } else {
-            return new MostAbundantStrategy(locationService, orderDetailRepository, stockService);
-        }
+        return switch (strategyName) {
+            case MOST_ABUNDANT -> new MostAbundantStrategy(locationService, orderDetailRepository, stockService);
+            case SINGLE_LOCATION -> new SingleLocationStrategy(locationService, orderDetailRepository, stockService);
+        };
     }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.exception.entity_exception.CustomerException;
 import ro.msg.learning.shop.exception.entity_exception.OrderDetailException;
+import ro.msg.learning.shop.exception.entity_exception.ProductException;
 import ro.msg.learning.shop.model.Customer;
 import ro.msg.learning.shop.model.Order;
 import ro.msg.learning.shop.model.OrderDetail;
@@ -38,8 +39,12 @@ public class OrderService {
             orderRepository.save(order);
 
             orderDetails.forEach(orderDetail -> {
-                Product product = productRepository.findById(orderDetail.getProduct().getId()).orElseThrow();
-                orderDetail.setProduct(product);
+                Optional<Product> product = productRepository.findById(orderDetail.getProduct().getId());
+                if (product.isPresent()) {
+                    orderDetail.setProduct(product.get());
+                } else {
+                    throw new ProductException("product not found");
+                }
             });
 
             List<OrderDetail> orderDetailsWithLocation = strategyService.findOrderDetailsLocation(orderDetails);
