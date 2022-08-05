@@ -18,6 +18,6 @@ public class ProductCategoryMapper {
     }
 
     public ProductCategory toProductCategory(ProductCategoryDto productCategoryDto) {
-        return new ProductCategory(productCategoryDto.getName(), productCategoryDto.getDescription(), new ArrayList<>());
+        return new ProductCategory(productCategoryDto.getName(), productCategoryDto.getDescription());
     }
 }

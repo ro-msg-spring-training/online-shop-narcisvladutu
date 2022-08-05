@@ -21,6 +21,10 @@ public class OrderDetail extends BaseEntity<Integer> {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "shipped_from", nullable = false)
+    private Location location;
+
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 }

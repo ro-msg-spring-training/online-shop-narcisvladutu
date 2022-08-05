@@ -17,7 +17,11 @@ public class StockMapper {
         return new StockDto(id, productName, locationName, quantity);
     }
 
-    public Stock toStock(StockDtoSave stockDtoSave, Product product, Location location) {
+    public Stock toStock(StockDtoSave stockDtoSave) {
+        Product product = new Product();
+        Location location =  new Location();
+        product.setId(stockDtoSave.getProductId());
+        location.setId(stockDtoSave.getLocationId());
         return new Stock(product, location, stockDtoSave.getQuantity());
     }
 }

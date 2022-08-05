@@ -20,7 +20,4 @@ public class ProductCategory extends BaseEntity<Integer> {
 
     @Column(name = "description")
     private String description;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private List<Product> products;
 }

@@ -1,4 +1,4 @@
-package ro.msg.learning.shop.contoller;
+package ro.msg.learning.shop.contoller.exception;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,15 +9,15 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ro.msg.learning.shop.exception.ApiError;
-import ro.msg.learning.shop.exception.entity_exception.ProductCategoryException;
-import ro.msg.learning.shop.exception.entity_exception.ProductException;
-import ro.msg.learning.shop.exception.entity_exception.SupplierException;
+import ro.msg.learning.shop.exception.entity_exception.*;
 
 import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({ProductCategoryException.class, SupplierException.class, ProductException.class})
+    @ExceptionHandler({ProductCategoryException.class, SupplierException.class, ProductException.class,
+            LocationException.class, OrderDetailException.class,
+            StockException.class, CustomerException.class})
     public ResponseEntity<Object> handleEntityNotFound(RuntimeException exception) {
         return new ResponseEntity<>(new ApiError(exception.getMessage(), HttpStatus.NOT_FOUND, LocalDateTime.now()),
                 HttpStatus.NOT_FOUND);
